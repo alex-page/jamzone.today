@@ -1,28 +1,24 @@
-import App from "~/components/App";
-import ButtonPrimary from "~/components/ButtonPrimary";
+import { Link as RLink } from "@remix-run/react";
+import Link from "~/components/Link";
 import PageLayout from "~/components/PageLayout";
-import ZoneTable from "~/components/ZoneTable";
 
 export default function Index() {
   return (
-    <App>
+    <>
       <PageLayout>
-        <nav className="text-xs py-4 text-gray-400 flex border-b border-gray-700">
-          <p className="flex-1">
+        <nav className="text-xs py-4 text-gray-400 flex items-center border-b border-gray-700">
+          <p className="flex-1 py-2">
             Made by{" "}
-            <a className="link" href="https://alexpage.dev">
+            <Link href="https://alexpage.dev" external>
               Alex Page
-            </a>
+            </Link>
           </p>
           <ul className="flex gap-6 justify-end">
             <li>
               ★ Star on{" "}
-              <a
-                className="link"
-                href="https://github.com/alex-page/jamzone.today"
-              >
+              <Link href="https://github.com/alex-page/jamzone.today" external>
                 GitHub
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>
@@ -39,16 +35,19 @@ export default function Index() {
             The standard for international collaboration.
           </p>
           <div className="mt-8">
-            <ButtonPrimary url="/new">Pump up the jam →</ButtonPrimary>
+            <RLink
+              to="/editor"
+              className="select-none text-white inline-flex font-semibold rounded-full bg-gradient-to-r from-red-500 to-rose-500 transition-shadow shadow-border shadow-red-400 hover:shadow-red-300 focus:outline-2 focus:outline-blue-500 focus:outline-offset-4 py-3 px-6"
+            >
+              Get started →
+            </RLink>
           </div>
         </div>
       </PageLayout>
 
       <div className="mt-12 max-w-7xl mx-auto perspective-lg">
-        <div className="rotate-x-25">
-          <ZoneTable />
-        </div>
+        <div className="rotate-x-25">{/* <ZoneTable /> */}</div>
       </div>
-    </App>
+    </>
   );
 }

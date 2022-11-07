@@ -1,15 +1,17 @@
+import { Link } from "@remix-run/react";
+
 interface Props {
+  href: string;
   children: React.ReactNode;
-  onClick: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
-export default function ButtonSecondary({ children, onClick }: Props) {
+export default function ButtonSecondary({ href, children }: Props) {
   return (
-    <button
-      onClick={onClick}
-      className="text-sm py-1 px-6 rounded-full transition-colors input button-focus"
+    <Link
+      to={href}
+      className="text-sm select-none outline-none py-1 px-6 transition-colors bg-gray-200/10 text-gray-300 border border-gray-400/20 hover:border-gray-400/40 rounded-full focus-visible:border-blue-500"
     >
       {children}
-    </button>
+    </Link>
   );
 }

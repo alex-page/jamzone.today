@@ -7,6 +7,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import PageGradient from "./components/PageGradient";
 
 import styles from "./styles/app.css";
 
@@ -26,15 +27,17 @@ export const meta: MetaFunction = () => ({
   viewport: "width=device-width,initial-scale=1",
 });
 
-export default function App() {
+export default function Root() {
   return (
-    <html lang="en" className="bg-gray-900 text-zinc-100 bg-no-repeat">
+    <html lang="en" className="dark bg-gray-900 text-zinc-100">
       <head>
         <Meta />
         <Links />
       </head>
       <body>
-        <Outlet />
+        <PageGradient>
+          <Outlet />
+        </PageGradient>
         <ScrollRestoration />
         <Scripts />
         <LiveReload />

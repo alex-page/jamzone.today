@@ -1,3 +1,4 @@
+import md5 from "md5";
 import { useState, useEffect } from "react";
 
 const hours = Array.from(Array(24).keys());
@@ -49,39 +50,27 @@ const TitleCell = ({
   );
 };
 
-const TimeCell = ({
-  color,
-  sections,
-  roundClass = "",
-}: {
-  color: string;
-  sections: string[][];
-  roundClass?: string;
-}) => {
+const ZoneTableRow = ({ zone }) => {
   return (
-    <div
-      key={color}
-      className={`grid grid-flow-col grid-cols-48 shadow-border shadow-gray-700 h-16 ${roundClass}`}
-    >
-      {sections.map(([minSection, maxSection], i) => (
+    <div className="h-16">
+      {zone.hours.map(([minClass, maxClass]: string[], i: number) => (
         <div
           key={i}
-          className={`${color} shadow-inner rounded ${minSection} ${maxSection}`}
+          className={`${zone.bg} rounded col-span-6 col-start-1 row-start-1`}
         ></div>
       ))}
     </div>
   );
 };
 
-export default function ZoneTable() {
+export default function ZoneTable({ zones, localTimezone, locale }) {
   const time = useTime();
-  const { locale, timeZone } = Intl.DateTimeFormat().resolvedOptions();
 
   return (
-    <div className="grid font-mono font-light text-xs">
+    <div className="grid font-mono font-light text-xs pt-6 px-6">
       <div>
         <p className="ml-2">
-          {time.toTimeString().split(" ")[0]} [{timeZone}]
+          {time.toTimeString().split(" ")[0]} [{localTimezone}]
         </p>
         <div className="grid grid-flow-col gap-px mt-2">
           {hours.map((hour, i) => (
@@ -94,73 +83,26 @@ export default function ZoneTable() {
               {hour <= 9 ? `0${hour}` : hour}:00
             </TitleCell>
           ))}
-        </div>
-        <div className="grid">
-          <TimeCell
-            color={colors[0]}
-            sections={[
-              ["col-start-2", "col-end-10"],
-              ["col-start-12", "col-end-23"],
-            ]}
-          />
-          <TimeCell
-            color={colors[1]}
-            sections={[
-              ["col-start-4", "col-end-13"],
-              ["col-start-15", "col-end-29"],
-            ]}
-          />
-          <TimeCell
-            color={colors[2]}
-            sections={[
-              ["col-start-4", "col-end-13"],
-              ["col-start-17", "col-end-27"],
-            ]}
-          />
-          <TimeCell
-            color={colors[3]}
-            sections={[
-              ["col-start-4", "col-end-13"],
-              ["col-start-17", "col-end-27"],
-            ]}
-          />
-          <TimeCell
-            color={colors[4]}
-            sections={[
-              ["col-start-15", "col-end-23"],
-              ["col-start-25", "col-end-35"],
-            ]}
-          />
-          <TimeCell
-            color={colors[5]}
-            sections={[
-              ["col-start-20", "col-end-30"],
-              ["col-start-32", "col-end-40"],
-            ]}
-          />
-          <TimeCell
-            color={colors[6]}
-            sections={[
-              ["col-start-20", "col-end-30"],
-              ["col-start-32", "col-end-40"],
-            ]}
-          />
-          <TimeCell
-            color={colors[7]}
-            sections={[
-              ["col-start-29", "col-end-39"],
-              ["col-start-41", "col-end-49"],
-            ]}
-          />
-          <TimeCell
-            color={colors[8]}
-            roundClass="rounded-bl-lg rounded-br-lg"
-            sections={[
-              ["col-start-43", "col-end-49"],
-              ["col-start-1", "col-end-3"],
-              ["col-start-5", "col-end-16"],
-            ]}
-          />
+
+          {zones.map((zone, i) => (
+            <>
+              <div className="w-44 p-1 text-xs flex gap-2 items-center bg-orange-500/20">
+                <img
+                  className="flex-none rounded-full w-8 h-8"
+                  title={zone.id}
+                  src={`https://gravatar.com/avatar/${md5(zone.id)}`}
+                  alt={`A gravatar of ${zone.id}`}
+                />
+                <div className="text-xs">
+                  <p className="w-32 text-ellipsis overflow-hidden">
+                    {zone.id}
+                  </p>
+                  <p>{zone.time}</p>
+                </div>
+              </div>
+              <ZoneTableRow key={i} zone={zone} locale={locale} />
+            </>
+          ))}
         </div>
       </div>
     </div>
