@@ -13,3 +13,10 @@ export interface Zone {
   h2: string;
   h3: string;
 }
+
+export interface ZoneRow {
+  id: string;
+  tz: string;
+  days: boolean[];
+  times: string[];
+}

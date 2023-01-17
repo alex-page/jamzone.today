@@ -1,12 +1,6 @@
-import { useState } from "react";
-import { timeZonesNames } from "@vvo/tzdb";
 import { Combobox } from "@headlessui/react";
-
-interface Props {
-  label: string;
-  name: string;
-  value?: string;
-}
+import { timeZonesNames } from "@vvo/tzdb";
+import { useState } from "react";
 
 const Icon = () => (
   <svg
@@ -25,8 +19,13 @@ const Icon = () => (
   </svg>
 );
 
+interface Props {
+  label: string;
+  name: string;
+  value?: string;
+}
+
 export default function TimezonePicker({ label, name, value }: Props) {
-  const [selected, setSelected] = useState(value);
   const [query, setQuery] = useState("");
 
   const filteredZones =
@@ -38,16 +37,15 @@ export default function TimezonePicker({ label, name, value }: Props) {
 
   return (
     <div className="flex flex-col flex-1 text-gray-400">
-      <Combobox value={selected} onChange={(newValue) => setSelected(newValue)}>
+      {/* https://github.com/tailwindlabs/headlessui/issues/2003#issuecomment-1332566391 */}
+      <Combobox defaultValue={value} name={name}>
         <Combobox.Label className="block text-xs mb-1">{label}</Combobox.Label>
         <div className="relative">
           <div className="cursor-default text-sm">
             <Combobox.Input
+              required
               className="px-4 py-2 w-full leading-none bg-gray-400/10 text-gray-300 border border-gray-400/20 hover:border-gray-400/40 transition-colors rounded outline-none focus:border-blue-500"
               onChange={(event) => setQuery(event.target.value)}
-              name={name}
-              defaultValue={query}
-              required
             />
             <Combobox.Button className="flex absolute top-0 bottom-0 right-0 justify-center items-center w-10 text-xs">
               <Icon />

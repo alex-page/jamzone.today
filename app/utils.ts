@@ -3,9 +3,9 @@ import type { Zone } from "./types";
 export function zoneArrayToParams(zones: Zone[]) {
   const paramObject = {};
   zones.flatMap((zone, i) => {
-    Object.entries(zone).map(([key, value]) => {
+    for (const [key, value] of Object.entries(zone)) {
       paramObject[`${i}-${key}`] = value;
-    });
+    }
   });
 
   return new URLSearchParams(paramObject).toString();
@@ -30,25 +30,30 @@ export function paramsToZoneArray(params: URLSearchParams) {
   return zones;
 }
 
-// for (const [key, value] of params.entries()) {
-//   const [keyName, idString, childIdString] = key
-//     .split("[")
-//     .map((a) => a.replace("]", ""));
+export function getTzHour(time: Date, timeZone: string) {
+  const formatter = new Intl.DateTimeFormat([], {
+    timeZone,
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+  });
 
-//   if (id === undefined) throw new Error("Invalid params");
+  return formatter.format(time);
+}
 
-//   zones[id] = zones[id] || {};
-//   if (childId !== undefined) {
-//     if (keyName === "d") {
-//       zones[id][keyName] = zones[id][keyName] || new Array(7).fill(0);
-//       zones[id][keyName][childId] = value === "on" ? 1 : 0;
-//     }
-//     if (keyName === "h") {
-//       zones[id][keyName] = zones[id][keyName] || [];
-//       zones[id][keyName][childId] = zones[id][keyName][childId] || [];
-//       zones[id][keyName][childId].push(value);
-//     }
-//   } else {
-//     zones[id][keyName] = value;
-//   }
-// }
+export function getTzOffset(timeZone: string) {
+  const formatter = new Intl.DateTimeFormat([], {
+    timeZoneName: "shortOffset",
+    timeZone,
+  });
+  return Number(formatter.format(new Date()).split("GMT")[1]);
+}
+
+export function getLocalTime(time: string, tz: string, localTz: string) {
+  const [h, m] = time.split(":");
+  const offset = getTzOffset(tz) - getTzOffset(localTz);
+
+  const hour = (Number(h) - offset) % 24;
+
+  return `${hour <= 9 ? `0${hour}` : hour}:${m}`;
+}

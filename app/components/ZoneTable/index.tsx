@@ -1,7 +1,6 @@
 import md5 from "md5";
-import { useState, useEffect } from "react";
-
-const hours = Array.from(Array(24).keys());
+import type { ZoneRow } from "~/types";
+import { getTzHour } from "~/utils";
 
 const colors = [
   "bg-rose-500",
@@ -23,88 +22,65 @@ const colors = [
   "bg-pink-500",
 ];
 
-function useTime() {
-  const [time, setTime] = useState(() => new Date());
-  useEffect(() => {
-    const id = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
-    return () => clearInterval(id);
-  }, []);
-  return time;
+const hours = Array.from(Array(24), (_, i) => `${i < 10 ? `0${i}` : i}:00`);
+const timeChunks = hours.flatMap((h) => [
+  h,
+  h.replace(":00", ":15"),
+  h.replace(":00", ":30"),
+  h.replace(":00", ":30"),
+]);
+
+interface Props {
+  zones: ZoneRow[];
+  time: Date;
 }
 
-const TitleCell = ({
-  roundClass = "",
-  children,
-}: {
-  roundClass?: string | undefined | false;
-  children: React.ReactNode;
-}) => {
-  return (
-    <div
-      className={`grid place-items-center p-2 shadow-border shadow-gray-700 ${roundClass}`}
-    >
-      {children}
-    </div>
-  );
-};
-
-const ZoneTableRow = ({ zone }) => {
-  return (
-    <div className="h-16">
-      {zone.hours.map(([minClass, maxClass]: string[], i: number) => (
-        <div
-          key={i}
-          className={`${zone.bg} rounded col-span-6 col-start-1 row-start-1`}
-        ></div>
-      ))}
-    </div>
-  );
-};
-
-export default function ZoneTable({ zones, localTimezone, locale }) {
-  const time = useTime();
+export default function ZoneTable({ zones, time }: Props) {
+  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   return (
-    <div className="grid font-mono font-light text-xs pt-6 px-6">
-      <div>
-        <p className="ml-2">
-          {time.toTimeString().split(" ")[0]} [{localTimezone}]
-        </p>
-        <div className="grid grid-flow-col gap-px mt-2">
-          {hours.map((hour, i) => (
-            <TitleCell
-              key={i}
-              roundClass={
-                (i === 0 && "rounded-tl-lg") || (i === 23 && "rounded-tr-lg")
-              }
-            >
-              {hour <= 9 ? `0${hour}` : hour}:00
-            </TitleCell>
-          ))}
-
-          {zones.map((zone, i) => (
-            <>
-              <div className="w-44 p-1 text-xs flex gap-2 items-center bg-orange-500/20">
-                <img
-                  className="flex-none rounded-full w-8 h-8"
-                  title={zone.id}
-                  src={`https://gravatar.com/avatar/${md5(zone.id)}`}
-                  alt={`A gravatar of ${zone.id}`}
-                />
-                <div className="text-xs">
-                  <p className="w-32 text-ellipsis overflow-hidden">
-                    {zone.id}
-                  </p>
-                  <p>{zone.time}</p>
-                </div>
-              </div>
-              <ZoneTableRow key={i} zone={zone} locale={locale} />
-            </>
+    <div className="font-mono font-light text-xs">
+      <div className="grid gap-2">
+        <div className="flex gap-px text-gray-500">
+          <div className="w-36 sm:w-40 -ml-2 sm:-ml-8 pl-2 sm:pl-8"></div>
+          <p className="sticky left:36 sm:left-40 w-56">
+            {timeZone.split("/")[1]} [{getTzHour(time, timeZone)}]
+          </p>
+        </div>
+        <div className="flex">
+          <div className="sticky flex left-0 h-full w-36 sm:w-40 -ml-2 sm:-ml-8 pl-2 sm:pl-8 bg-gray-900"></div>
+          {hours.map((hour) => (
+            <div className="w-12 mr-1" key={hour}>
+              {hour}
+            </div>
           ))}
         </div>
+        {zones.map((zone, zid) => (
+          <div className="flex gap-px" key={zone.id}>
+            <div className="w-36 sm:w-40 flex gap-2 sticky z-10 left-0 -ml-2 sm:-ml-8 pl-2 sm:pl-8 py-2 bg-gray-900">
+              <img
+                alt=""
+                title={zone.id}
+                className="w-8 h-8 rounded-full"
+                src={`https://gravatar.com/avatar/${md5(zone.id)}`}
+              />
+              <div>
+                <p>{zone.tz.split("/")[1]}</p>
+                <p>{getTzHour(time, zone.tz)}</p>
+              </div>
+            </div>
+            {timeChunks.map((tChunk) => (
+              <div
+                key={`${zid}-${tChunk}`}
+                className={`${
+                  zone.times.includes(tChunk) ? colors[zid] : "bg-white/10"
+                } w-3`}
+              />
+            ))}
+          </div>
+        ))}
       </div>
+      <pre>{JSON.stringify(zones, null, 2)}</pre>
     </div>
   );
 }

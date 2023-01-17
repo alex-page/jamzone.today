@@ -20,7 +20,7 @@ import { paramsToZoneArray, zoneArrayToParams } from "~/utils";
 
 const defaultZone: Zone = {
   id: "",
-  tz: "",
+  tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
   d0: "on",
   d1: "on",
   d2: "on",
@@ -52,16 +52,16 @@ export default function Editor() {
   return (
     <PageLayout>
       <Form id="editor" method="get" onChange={(e) => submit(e.currentTarget)}>
-        <nav className="text-xs py-4 text-gray-400 flex justify-between items-center border-b border-gray-700">
-          <p className="py-2">
+        <nav className="text-xs py-3 text-gray-400 flex justify-between items-center border-b border-gray-700">
+          <p>
             <Link href="/">← Home</Link>
           </p>
           <button
             formAction={useFormAction("/zones")}
             formMethod="get"
-            className="select-none text-white inline-flex font-semibold rounded-full bg-gradient-to-r from-red-500 to-rose-500 transition-shadow shadow-border shadow-red-400 hover:shadow-red-300 focus:outline-2 focus:outline-blue-500 focus:outline-offset-4 py-1 px-3"
+            className="select-none leading-none text-white inline-flex font-semibold rounded-full bg-gradient-to-r from-red-500 to-rose-500 transition-shadow shadow-border shadow-red-400 hover:shadow-red-300 focus:outline-2 focus:outline-blue-500 focus:outline-offset-4 py-1 -my-1 px-3"
           >
-            Create jamzone →
+            View jamzone →
           </button>
         </nav>
         <div className="flex flex-row mt-8 items-center justify-between">
@@ -101,6 +101,9 @@ export default function Editor() {
                 />
               </div>
               <RLink
+                // To investigate: reloadDocument is currently necessary
+                // The removed item gets correctly removed from the URL
+                // but the UI is not updated
                 reloadDocument
                 aria-label="Remove item"
                 className={`flex items-center mt-4 px-4 text-gray-600 hover:text-gray-400 transition-colors ${
@@ -109,7 +112,7 @@ export default function Editor() {
                 type="button"
                 title="Remove item"
                 to={`/editor?${zoneArrayToParams(
-                  zones.filter((_, i) => i !== rowId)
+                  zones.filter((_: Zone, i: number) => i !== rowId)
                 )}`}
               >
                 <svg

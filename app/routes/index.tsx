@@ -6,8 +6,8 @@ export default function Index() {
   return (
     <>
       <PageLayout>
-        <nav className="text-xs py-4 text-gray-400 flex items-center border-b border-gray-700">
-          <p className="flex-1 py-2">
+        <nav className="text-xs py-3 text-gray-400 flex items-center border-b border-gray-700">
+          <p className="flex-1">
             Made by{" "}
             <Link href="https://alexpage.dev" external>
               Alex Page
