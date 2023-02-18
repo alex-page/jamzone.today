@@ -11,12 +11,12 @@ import { json } from "@remix-run/node";
 import Link from "~/components/Link";
 import ButtonSecondary from "~/components/ButtonSecondary";
 import EmailInput from "~/components/EmailInput";
-import TimezonePicker from "~/components/TimezoneInput";
 import DayBoxes from "~/components/DayBoxes";
 import HourInputs from "~/components/HourInputs";
 import PageLayout from "~/components/PageLayout";
-import type { Zone } from "~/types";
+import TimezonePicker from "~/components/TimezonePicker";
 import { paramsToZoneArray, zoneArrayToParams } from "~/utils";
+import type { Zone } from "~/types";
 
 const defaultZone: Zone = {
   id: "",
@@ -51,7 +51,11 @@ export default function Editor() {
 
   return (
     <PageLayout>
-      <Form id="editor" method="get" onChange={(e) => submit(e.currentTarget)}>
+      <Form
+        id="editor"
+        method="get"
+        onChange={(e) => submit(e.currentTarget, { preventScrollReset: true })}
+      >
         <nav className="text-xs py-3 text-gray-400 flex justify-between items-center border-b border-gray-700">
           <p>
             <Link href="/">← Home</Link>

@@ -1,6 +1,7 @@
 import md5 from "md5";
+import { useEffect, useState } from "react";
 import type { ZoneRow } from "~/types";
-import { getTzHour } from "~/utils";
+import { getTzDay, getTzHour, hours, timeChunks } from "~/utils";
 
 const colors = [
   "bg-rose-500",
@@ -22,65 +23,66 @@ const colors = [
   "bg-pink-500",
 ];
 
-const hours = Array.from(Array(24), (_, i) => `${i < 10 ? `0${i}` : i}:00`);
-const timeChunks = hours.flatMap((h) => [
-  h,
-  h.replace(":00", ":15"),
-  h.replace(":00", ":30"),
-  h.replace(":00", ":30"),
-]);
+function useTime(): Date | null {
+  const [time, setTime] = useState<Date | null>(null);
+  useEffect(() => {
+    setTime(() => new Date());
+    const id = setInterval(() => setTime(() => new Date()), 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  return time;
+}
 
 interface Props {
   zones: ZoneRow[];
-  time: Date;
 }
 
-export default function ZoneTable({ zones, time }: Props) {
+export default function ZoneTable({ zones }: Props) {
+  const time = useTime();
   const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+  if (!time) return <></>;
 
   return (
     <div className="font-mono font-light text-xs">
-      <div className="grid gap-2">
-        <div className="flex gap-px text-gray-500">
-          <div className="w-36 sm:w-40 -ml-2 sm:-ml-8 pl-2 sm:pl-8"></div>
-          <p className="sticky left:36 sm:left-40 w-56">
-            {timeZone.split("/")[1]} [{getTzHour(time, timeZone)}]
-          </p>
-        </div>
+      <div className="grid gap-1">
         <div className="flex">
-          <div className="sticky flex left-0 h-full w-36 sm:w-40 -ml-2 sm:-ml-8 pl-2 sm:pl-8 bg-gray-900"></div>
+          <div className="sticky flex left-0 h-full w-40 -ml-8 pl-8 bg-gray-900"></div>
           {hours.map((hour) => (
-            <div className="w-12 mr-1" key={hour}>
+            <div className="w-[calc(100%/24)] mr-1 text-[10px]" key={hour}>
               {hour}
             </div>
           ))}
         </div>
         {zones.map((zone, zid) => (
           <div className="flex gap-px" key={zone.id}>
-            <div className="w-36 sm:w-40 flex gap-2 sticky z-10 left-0 -ml-2 sm:-ml-8 pl-2 sm:pl-8 py-2 bg-gray-900">
+            <div className="w-40 py-2 flex gap-2 sticky z-10 left-0 -ml-8 pl-8 bg-gray-900">
               <img
                 alt=""
                 title={zone.id}
-                className="w-8 h-8 rounded-full"
+                className="w-6 h-6 rounded"
                 src={`https://gravatar.com/avatar/${md5(zone.id)}`}
               />
-              <div>
-                <p>{zone.tz.split("/")[1]}</p>
+              <div className="leading-3 text-[10px]">
                 <p>{getTzHour(time, zone.tz)}</p>
+                <p className="text-gray-500">{zone.tz.split("/")[1]}</p>
               </div>
             </div>
             {timeChunks.map((tChunk) => (
               <div
                 key={`${zid}-${tChunk}`}
                 className={`${
-                  zone.times.includes(tChunk) ? colors[zid] : "bg-white/10"
-                } w-3`}
+                  zone.times.includes(tChunk) &&
+                  zone.days.includes(getTzDay(time, zone.tz))
+                    ? colors[zid % colors.length]
+                    : "bg-white/10"
+                } w-[calc(100%/96)]`}
               />
             ))}
           </div>
         ))}
       </div>
-      <pre>{JSON.stringify(zones, null, 2)}</pre>
     </div>
   );
 }

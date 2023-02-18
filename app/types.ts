@@ -17,6 +17,6 @@ export interface Zone {
 export interface ZoneRow {
   id: string;
   tz: string;
-  days: boolean[];
+  days: string[];
   times: string[];
 }
