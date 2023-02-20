@@ -1,3 +1,4 @@
+import { lookupViaCity } from "city-timezones";
 import type { Zone } from "./types";
 
 export const hours = Array.from(
@@ -12,15 +13,77 @@ export const timeChunks = hours.flatMap((h) => [
   h.replace(":00", ":45"),
 ]);
 
+const mockDayHours = {
+  d0: "on",
+  d1: "on",
+  d2: "on",
+  d3: "on",
+  d4: "on",
+  d5: "on",
+  d6: "on",
+  h0: "09:00",
+  h1: "12:00",
+  h2: "13:00",
+  h3: "17:00",
+};
+
+export const mockParams = zoneArrayToParams([
+  {
+    id: "marten.bjork@shopify.com",
+    c: "Malmö, SWE",
+    ...mockDayHours,
+  },
+  // {
+  //   id: "yuraima.estevez@shopify.com",
+  //   c: "Berlin, DEU",
+  //   ...mockDayHours,
+  // },
+  // {
+  //   id: "raquel.breternitz@shopify.com",
+  //   c: "Lisbon, PRT",
+  //   ...mockDayHours,
+  // },
+  {
+    id: "thomas.jonkajtys@shopify.com",
+    c: "Montréal, CAN",
+    ...mockDayHours,
+  },
+  {
+    id: "sam.rose@shopify.com",
+    c: "Charlotte, USA",
+    ...mockDayHours,
+  },
+  // {
+  //   id: "johan.stromqvist@shopify.com",
+  //   c: "Vancouver, CAN",
+  //   ...mockDayHours,
+  // },
+  // {
+  //   id: "aaron.casanova@shopify.com",
+  //   c: "Los Angeles, USA",
+  //   ...mockDayHours,
+  // },
+  {
+    id: "alex.page@shopify.com",
+    c: "Canberra, AUS",
+    ...mockDayHours,
+  },
+  {
+    id: "dominik.wilkowski@shopify.com",
+    c: "Brisbane, AUS",
+    ...mockDayHours,
+  },
+]);
+
 export function zoneArrayToParams(zones: Zone[]) {
-  const paramObject = {};
-  zones.flatMap((zone, i) => {
+  const paramObject: any = {};
+  zones.forEach((zone, i) => {
     for (const [key, value] of Object.entries(zone)) {
       paramObject[`${i}-${key}`] = value;
     }
   });
 
-  return new URLSearchParams(paramObject).toString();
+  return new URLSearchParams(paramObject);
 }
 
 export function paramsToZoneArray(params: URLSearchParams) {
@@ -40,6 +103,36 @@ export function paramsToZoneArray(params: URLSearchParams) {
   }
 
   return zones;
+}
+
+export function localizedParamsToZoneArray(
+  params: URLSearchParams,
+  localTz: string
+) {
+  const zones = paramsToZoneArray(params);
+  return zones.map((z) => {
+    const days = [
+      ...(z.d0 === "on" ? ["Mon"] : []),
+      ...(z.d1 === "on" ? ["Tue"] : []),
+      ...(z.d2 === "on" ? ["Wed"] : []),
+      ...(z.d3 === "on" ? ["Thu"] : []),
+      ...(z.d4 === "on" ? ["Fri"] : []),
+      ...(z.d5 === "on" ? ["Sat"] : []),
+      ...(z.d6 === "on" ? ["Sun"] : []),
+    ];
+
+    const [city, iso3] = z.c.split(", ");
+    const cityData = lookupViaCity(city).filter((c) => c.iso3 === iso3)[0];
+    const tz = cityData ? cityData.timezone : "";
+
+    return {
+      id: z.id,
+      c: z.c,
+      tz,
+      days,
+      times: getTimes([z.h0, z.h1, z.h2, z.h3], tz, localTz),
+    };
+  });
 }
 
 export function getTzHour(time: Date, timeZone: string) {

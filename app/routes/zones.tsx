@@ -1,7 +1,7 @@
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import type { LoaderFunction, LoaderArgs } from "@remix-run/node";
-import { paramsToZoneArray, getTimes } from "~/utils";
+import { localizedParamsToZoneArray } from "~/utils";
 import Link from "~/components/Link";
 import ZoneTable from "~/components/ZoneTable";
 import type { ZoneRow } from "~/types";
@@ -16,26 +16,7 @@ export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
 
   const params = new URL(request.url).searchParams;
 
-  const zones: ZoneRow[] = paramsToZoneArray(params).map((z) => {
-    const days = [
-      ...(z.d0 === "on" ? ["Mon"] : []),
-      ...(z.d1 === "on" ? ["Tue"] : []),
-      ...(z.d2 === "on" ? ["Wed"] : []),
-      ...(z.d3 === "on" ? ["Thu"] : []),
-      ...(z.d4 === "on" ? ["Fri"] : []),
-      ...(z.d5 === "on" ? ["Sat"] : []),
-      ...(z.d6 === "on" ? ["Sun"] : []),
-    ];
-
-    console.log(days);
-
-    return {
-      id: z.id,
-      tz: z.tz,
-      days,
-      times: getTimes([z.h0, z.h1, z.h2, z.h3], z.tz, localTz),
-    };
-  });
+  const zones: ZoneRow[] = localizedParamsToZoneArray(params, localTz);
 
   return json({
     zones,

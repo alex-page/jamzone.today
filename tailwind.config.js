@@ -18,15 +18,8 @@ const perspective = plugin(function ({ addUtilities }) {
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./app/root.tsx",
-    "./app/routes/**/*.tsx",
-    "./app/components/**/*.tsx",
-  ],
+  content: ["./app/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    boxShadow: {
-      border: "0 0 0 1px",
-    },
     fontFamily: {
       sans: [
         "SFRounded",

@@ -40,48 +40,67 @@ interface Props {
 
 export default function ZoneTable({ zones }: Props) {
   const time = useTime();
-  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
   if (!time) return <></>;
+
+  const currentTimeInMinutes = time.getHours() * 60 + time.getMinutes();
+  const timePercentage =
+    ((currentTimeInMinutes / (24 * 60)) * 100).toFixed(2) + "%";
 
   return (
     <div className="font-mono font-light text-xs">
       <div className="grid gap-1">
         <div className="flex">
-          <div className="sticky flex left-0 h-full w-40 -ml-8 pl-8 bg-gray-900"></div>
+          <div className="w-40"></div>
           {hours.map((hour) => (
             <div className="w-[calc(100%/24)] mr-1 text-[10px]" key={hour}>
               {hour}
             </div>
           ))}
         </div>
-        {zones.map((zone, zid) => (
-          <div className="flex gap-px" key={zone.id}>
-            <div className="w-40 py-2 flex gap-2 sticky z-10 left-0 -ml-8 pl-8 bg-gray-900">
-              <img
-                alt=""
-                title={zone.id}
-                className="w-6 h-6 rounded"
-                src={`https://gravatar.com/avatar/${md5(zone.id)}`}
-              />
-              <div className="leading-3 text-[10px]">
-                <p>{getTzHour(time, zone.tz)}</p>
-                <p className="text-gray-500">{zone.tz.split("/")[1]}</p>
-              </div>
-            </div>
-            {timeChunks.map((tChunk) => (
-              <div
-                key={`${zid}-${tChunk}`}
-                className={`${
-                  zone.times.includes(tChunk) &&
-                  zone.days.includes(getTzDay(time, zone.tz))
-                    ? colors[zid % colors.length]
-                    : "bg-white/10"
-                } w-[calc(100%/96)]`}
-              />
-            ))}
+        <div className="relative grid gap-2">
+          <div className="absolute left-32 top-0 bottom-0 right-0">
+            <div
+              className="absolute top-0 bottom-0 bg-rose-500 w-px z-20 outline outline-2 outline-gray-900"
+              style={{ left: timePercentage }}
+            ></div>
           </div>
-        ))}
+          {zones.map((zone, zid) => (
+            <div
+              className={`flex gap-px${
+                zone.days.includes(getTzDay(time, zone.tz)) ? "" : " opacity-20"
+              }`}
+              key={zid}
+            >
+              <div className="w-40 py-2 sticky z-10 left-0 bg-gray-900 flex gap-2">
+                <div className="w-6 h-6 rounded overflow-hidden bg-white/20">
+                  <img
+                    alt=""
+                    src={`https://gravatar.com/avatar/${md5(zone.id)}`}
+                  />
+                </div>
+                <div className="leading-3 text-[10px] w-24">
+                  <p>
+                    {getTzDay(time, zone.tz)} {getTzHour(time, zone.tz)}
+                  </p>
+                  <p className="text-gray-500 truncate">{zone.c}</p>
+                </div>
+              </div>
+              {timeChunks.map((tChunk, i) => (
+                <div
+                  key={`${zid}-${tChunk}`}
+                  className={`${
+                    zone.times.includes(tChunk) &&
+                    zone.days.includes(getTzDay(time, zone.tz))
+                      ? colors[zid % colors.length] + " "
+                      : "bg-white/10 "
+                  }${i === 0 ? "rounded-l-lg " : ""}${
+                    i === timeChunks.length - 1 ? "rounded-r-lg " : ""
+                  }w-[calc(100%/96)]`}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

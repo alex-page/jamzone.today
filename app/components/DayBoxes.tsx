@@ -13,7 +13,7 @@ const days = [
 interface Props {
   label: string;
   name: string;
-  values: ("on" | "")[];
+  values: string[];
 }
 
 export default function DayBoxes({ label, name, values }: Props) {

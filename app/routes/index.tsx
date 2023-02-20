@@ -1,8 +1,26 @@
-import { Link as RLink } from "@remix-run/react";
+import type { LoaderArgs, LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
+import { Link as RLink, useLoaderData } from "@remix-run/react";
 import Link from "~/components/Link";
 import PageLayout from "~/components/PageLayout";
+import ZoneTable from "~/components/ZoneTable";
+import type { ZoneRow } from "~/types";
+import { localizedParamsToZoneArray, mockParams } from "~/utils";
+
+interface LoaderData {
+  zones: ZoneRow[];
+}
+
+export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
+  const localTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const zones: ZoneRow[] = localizedParamsToZoneArray(mockParams, localTz);
+
+  return json({ zones });
+};
 
 export default function Index() {
+  const { zones }: LoaderData = useLoaderData();
+
   return (
     <>
       <PageLayout>
@@ -24,20 +42,18 @@ export default function Index() {
         </nav>
         <div className="text-center pt-40">
           <h1 className="inline-grid relative">
-            <div className="absolute -top-6 -right-2 text-rose-500 flex">
-              <span className="text-xs border-rose-500 rounded font-semibold border-2 py-1 px-2">
-                🍓 Alpha
-              </span>
+            <div className="absolute -top-2 -right-2 text-rose-500 flex">
+              <span className="text-xs font-semibold py-1 px-2">🍓 Alpha</span>
             </div>
             <span className="text-6xl font-bold">jamzone.today</span>
           </h1>
           <p className="mt-4 text-xl text-gray-400">
-            The standard for international collaboration.
+            Worldwide collaboration made easy.
           </p>
           <div className="mt-8">
             <RLink
               to="/editor"
-              className="select-none text-white inline-flex font-semibold rounded-full bg-gradient-to-r from-red-500 to-rose-500 transition-shadow shadow-border shadow-red-400 hover:shadow-red-300 focus:outline-2 focus:outline-blue-500 focus:outline-offset-4 py-3 px-6"
+              className="select-none shadow-lg shadow-rose-500/10 hover:shadow-rose-500/20 transition-shadow text-white inline-flex font-semibold rounded-full bg-gradient-to-r from-rose-500 to-red-500 focus:outline-2 focus:outline-blue-500 focus:outline-offset-4 py-3 px-6"
             >
               Get started →
             </RLink>
@@ -46,7 +62,9 @@ export default function Index() {
       </PageLayout>
 
       <div className="mt-12 max-w-7xl mx-auto perspective-lg">
-        <div className="rotate-x-25">{/* <ZoneTable /> */}</div>
+        <div className="rotate-x-25 mx-12 pl-4 overflow-hidden">
+          <ZoneTable zones={zones} />
+        </div>
       </div>
     </>
   );

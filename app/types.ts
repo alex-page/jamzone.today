@@ -1,13 +1,13 @@
 export interface Zone {
   id: string;
-  tz: string;
-  d0: "on" | "";
-  d1: "on" | "";
-  d2: "on" | "";
-  d3: "on" | "";
-  d4: "on" | "";
-  d5: "on" | "";
-  d6: "on" | "";
+  c: string;
+  d0: string;
+  d1: string;
+  d2: string;
+  d3: string;
+  d4: string;
+  d5: string;
+  d6: string;
   h0: string;
   h1: string;
   h2: string;
@@ -16,6 +16,7 @@ export interface Zone {
 
 export interface ZoneRow {
   id: string;
+  c: string;
   tz: string;
   days: string[];
   times: string[];

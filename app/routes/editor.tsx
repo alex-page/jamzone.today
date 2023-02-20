@@ -14,13 +14,13 @@ import EmailInput from "~/components/EmailInput";
 import DayBoxes from "~/components/DayBoxes";
 import HourInputs from "~/components/HourInputs";
 import PageLayout from "~/components/PageLayout";
-import TimezonePicker from "~/components/TimezonePicker";
+import CityPicker from "~/components/CityPicker";
 import { paramsToZoneArray, zoneArrayToParams } from "~/utils";
 import type { Zone } from "~/types";
 
 const defaultZone: Zone = {
   id: "",
-  tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
+  c: "",
   d0: "on",
   d1: "on",
   d2: "on",
@@ -63,7 +63,7 @@ export default function Editor() {
           <button
             formAction={useFormAction("/zones")}
             formMethod="get"
-            className="select-none leading-none text-white inline-flex font-semibold rounded-full bg-gradient-to-r from-red-500 to-rose-500 transition-shadow shadow-border shadow-red-400 hover:shadow-red-300 focus:outline-2 focus:outline-blue-500 focus:outline-offset-4 py-1 -my-1 px-3"
+            className="select-none shadow-lg shadow-rose-500/10 hover:shadow-rose-500/20 transition-shadow text-white inline-flex font-semibold rounded-full bg-gradient-to-r from-rose-500 to-red-500 focus:outline-2 focus:outline-blue-500 focus:outline-offset-4 py-1 -my-1 px-3"
           >
             View jamzone →
           </button>
@@ -80,11 +80,7 @@ export default function Editor() {
                   name={`${rowId}-id`}
                   value={zone.id}
                 />
-                <TimezonePicker
-                  label="Timezone"
-                  name={`${rowId}-tz`}
-                  value={zone.tz}
-                />
+                <CityPicker label="City" name={`${rowId}-c`} value={zone.c} />
                 <DayBoxes
                   label="Days"
                   name={`${rowId}-d`}
@@ -117,7 +113,7 @@ export default function Editor() {
                 title="Remove item"
                 to={`/editor?${zoneArrayToParams(
                   zones.filter((_: Zone, i: number) => i !== rowId)
-                )}`}
+                ).toString()}`}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -142,7 +138,10 @@ export default function Editor() {
           <div className="max-w-4xl mx-auto flex gap-4 place-items-center pt-8 pb-16">
             <div className="border-t border-gray-700 flex-1" />
             <ButtonSecondary
-              href={`/editor?${zoneArrayToParams([...zones, defaultZone])}`}
+              href={`/editor?${zoneArrayToParams([
+                ...zones,
+                defaultZone,
+              ]).toString()}`}
             >
               + Add person
             </ButtonSecondary>

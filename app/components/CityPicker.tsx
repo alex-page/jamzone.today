@@ -1,6 +1,6 @@
 import { Combobox } from "@headlessui/react";
-import { timeZonesNames } from "@vvo/tzdb";
 import { useState } from "react";
+import { cityMapping } from "city-timezones";
 
 const Icon = () => (
   <svg
@@ -30,9 +30,9 @@ export default function TimezonePicker({ label, name, value }: Props) {
 
   const filteredZones =
     query === ""
-      ? timeZonesNames
-      : timeZonesNames.filter((person) => {
-          return person.toLowerCase().includes(query.toLowerCase());
+      ? []
+      : cityMapping.filter(({ city }) => {
+          return city.toLowerCase().startsWith(query.toLowerCase());
         });
 
   return (
@@ -58,15 +58,15 @@ export default function TimezonePicker({ label, name, value }: Props) {
                 Nothing found.
               </div>
             ) : (
-              filteredZones.map((zone) => (
+              filteredZones.map(({ city, iso3 }, zid) => (
                 <Combobox.Option
-                  key={zone}
+                  key={zid}
                   className={({ active }) =>
                     `relative cursor-default select-none py-2 px-4 text-xs ${
                       active ? "bg-blue-500 text-white" : "text-gray-300"
                     }`
                   }
-                  value={zone}
+                  value={`${city}, ${iso3}`}
                 >
                   {({ selected }) => (
                     <>
@@ -75,7 +75,7 @@ export default function TimezonePicker({ label, name, value }: Props) {
                           selected ? "font-medium" : "font-normal"
                         }`}
                       >
-                        {zone}
+                        {city}, {iso3}
                       </span>
                     </>
                   )}
