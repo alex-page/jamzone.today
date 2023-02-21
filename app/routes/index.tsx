@@ -1,25 +1,13 @@
-import type { LoaderArgs, LoaderFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { Link as RLink, useLoaderData } from "@remix-run/react";
+import { Link as RLink } from "@remix-run/react";
 import Link from "~/components/Link";
 import PageLayout from "~/components/PageLayout";
 import ZoneTable from "~/components/ZoneTable";
 import type { ZoneRow } from "~/types";
 import { localizedParamsToZoneArray, mockParams } from "~/utils";
 
-interface LoaderData {
-  zones: ZoneRow[];
-}
-
-export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
+export default function Index() {
   const localTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const zones: ZoneRow[] = localizedParamsToZoneArray(mockParams, localTz);
-
-  return json({ zones });
-};
-
-export default function Index() {
-  const { zones }: LoaderData = useLoaderData();
 
   return (
     <>
