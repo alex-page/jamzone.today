@@ -46,6 +46,7 @@ export default function TimezonePicker({ label, name, value }: Props) {
               required
               className="px-4 py-2 w-full leading-none bg-gray-400/10 text-gray-300 border border-gray-400/20 hover:border-gray-400/40 transition-colors rounded outline-none focus:border-blue-500"
               onChange={(event) => setQuery(event.target.value)}
+              data-1p-ignore
             />
             <Combobox.Button className="flex absolute top-0 bottom-0 right-0 justify-center items-center w-10 text-xs">
               <Icon />

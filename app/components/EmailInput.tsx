@@ -36,7 +36,7 @@ export default function EmailInput({ label, name, value }: Props) {
         defaultValue={value}
         required
         placeholder="beep@boop.dev"
-        autoComplete="off"
+        data-1p-ignore
       />
     </div>
   );

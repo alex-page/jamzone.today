@@ -105,11 +105,7 @@ export function paramsToZoneArray(params: URLSearchParams) {
   return zones;
 }
 
-export function localizedParamsToZoneArray(
-  params: URLSearchParams,
-  localTz: string
-) {
-  const zones = paramsToZoneArray(params);
+export function localizeZones(zones: Zone[], localTz: string) {
   return zones.map((z) => {
     const days = [
       ...(z.d0 === "on" ? ["Mon"] : []),

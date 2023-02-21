@@ -1,29 +1,30 @@
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import type { LoaderFunction, LoaderArgs } from "@remix-run/node";
-import { localizedParamsToZoneArray } from "~/utils";
+import { localizeZones, paramsToZoneArray } from "~/utils";
 import Link from "~/components/Link";
 import ZoneTable from "~/components/ZoneTable";
-import type { ZoneRow } from "~/types";
+import type { Zone, ZoneRow } from "~/types";
 
 interface LoaderData {
-  params: URLSearchParams;
+  zones: Zone[];
   paramString: string;
 }
 
 export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
   const params = new URL(request.url).searchParams;
+  const zones = paramsToZoneArray(params);
 
   return json({
-    params,
+    zones,
     paramString: params.toString(),
   });
 };
 
 export default function Zones() {
-  const { params, paramString } = useLoaderData() as unknown as LoaderData;
+  const { zones: unlocalisedZones, paramString }: LoaderData = useLoaderData();
   const localTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  const zones: ZoneRow[] = localizedParamsToZoneArray(params, localTz);
+  const zones: ZoneRow[] = localizeZones(unlocalisedZones, localTz);
 
   return (
     <div className="px-8 pt-4 pb-16">
