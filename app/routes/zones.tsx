@@ -7,25 +7,23 @@ import ZoneTable from "~/components/ZoneTable";
 import type { ZoneRow } from "~/types";
 
 interface LoaderData {
-  zones: ZoneRow[];
+  params: URLSearchParams;
   paramString: string;
 }
 
 export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
-  const localTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
   const params = new URL(request.url).searchParams;
 
-  const zones: ZoneRow[] = localizedParamsToZoneArray(params, localTz);
-
   return json({
-    zones,
+    params,
     paramString: params.toString(),
   });
 };
 
 export default function Zones() {
-  const { zones, paramString }: LoaderData = useLoaderData();
+  const { params, paramString } = useLoaderData() as unknown as LoaderData;
+  const localTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const zones: ZoneRow[] = localizedParamsToZoneArray(params, localTz);
 
   return (
     <div className="px-8 pt-4 pb-16">
