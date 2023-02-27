@@ -1,4 +1,4 @@
-import { Link as RemixLink } from "@remix-run/react";
+import { Link as RLink } from "@remix-run/react";
 
 interface Props {
   external?: boolean;
@@ -19,8 +19,8 @@ export default function Link({ href, external = false, children }: Props) {
   }
 
   return (
-    <RemixLink to={href} className={linkClass}>
+    <RLink to={href} className={linkClass}>
       {children}
-    </RemixLink>
+    </RLink>
   );
 }
