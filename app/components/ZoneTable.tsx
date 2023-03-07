@@ -63,6 +63,12 @@ export default function ZoneTable({ zones }: Props) {
               className="absolute top-0 bottom-0 bg-rose-500 w-px z-20 outline outline-2 outline-gray-900"
               style={{ left: timePercentage }}
             ></div>
+            <div
+              className="absolute bottom-full -translate-y-1 -translate-x-2/4 text-[10px] px-1 text-white bg-rose-500  z-20 outline outline-2 outline-gray-900"
+              style={{ left: timePercentage }}
+            >
+              {`${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`}
+            </div>
           </div>
           {zones.map((zone, zid) => (
             <div
@@ -75,7 +81,7 @@ export default function ZoneTable({ zones }: Props) {
                 <div className="w-6 h-6 rounded overflow-hidden bg-white/20">
                   <img
                     alt=""
-                    src={`https://gravatar.com/avatar/${md5(zone.id)}`}
+                    src={`https://gravatar.com/avatar/${md5(zone.e)}`}
                   />
                 </div>
                 <div className="leading-3 text-[10px] w-24">

@@ -4,6 +4,7 @@ module.exports = {
   future: {
     unstable_tailwind: true,
   },
+  serverDependenciesToBundle: ["nanoid"],
   // appDirectory: "app",
   // assetsBuildDirectory: "public/build",
   // serverBuildPath: "build/index.js",

@@ -1,5 +1,6 @@
 export interface Zone {
   id: string;
+  e: string;
   c: string;
   d0: string;
   d1: string;
@@ -15,7 +16,7 @@ export interface Zone {
 }
 
 export interface ZoneRow {
-  id: string;
+  e: string;
   c: string;
   tz: string;
   days: string[];

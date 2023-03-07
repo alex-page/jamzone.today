@@ -29,47 +29,56 @@ const mockDayHours = {
 
 export const mockParams = zoneArrayToParams([
   {
-    id: "marten.bjork@shopify.com",
+    id: "a",
+    e: "marten.bjork@shopify.com",
     c: "Malmö, SWE",
     ...mockDayHours,
   },
-  // {
-  //   id: "yuraima.estevez@shopify.com",
-  //   c: "Berlin, DEU",
-  //   ...mockDayHours,
-  // },
-  // {
-  //   id: "raquel.breternitz@shopify.com",
-  //   c: "Lisbon, PRT",
-  //   ...mockDayHours,
-  // },
   {
-    id: "thomas.jonkajtys@shopify.com",
+    id: "b",
+    e: "liz.khoo@shopify.com",
+    c: "Berlin, DEU",
+    ...mockDayHours,
+  },
+  {
+    id: "c",
+    e: "raquel.breternitz@shopify.com",
+    c: "Lisbon, PRT",
+    ...mockDayHours,
+  },
+  {
+    id: "d",
+    e: "thomas.jonkajtys@shopify.com",
     c: "Montréal, CAN",
     ...mockDayHours,
   },
   {
-    id: "sam.rose@shopify.com",
+    id: "e",
+    e: "sam.rose@shopify.com",
     c: "Charlotte, USA",
     ...mockDayHours,
   },
-  // {
-  //   id: "johan.stromqvist@shopify.com",
-  //   c: "Vancouver, CAN",
-  //   ...mockDayHours,
-  // },
-  // {
-  //   id: "aaron.casanova@shopify.com",
-  //   c: "Los Angeles, USA",
-  //   ...mockDayHours,
-  // },
   {
-    id: "alex.page@shopify.com",
+    id: "f",
+    e: "johan.stromqvist@shopify.com",
+    c: "Vancouver, CAN",
+    ...mockDayHours,
+  },
+  {
+    id: "g",
+    e: "aaron.casanova@shopify.com",
+    c: "Los Angeles, USA",
+    ...mockDayHours,
+  },
+  {
+    id: "h",
+    e: "alex.page@shopify.com",
     c: "Canberra, AUS",
     ...mockDayHours,
   },
   {
-    id: "dominik.wilkowski@shopify.com",
+    id: "i",
+    e: "dominik.wilkowski@shopify.com",
     c: "Brisbane, AUS",
     ...mockDayHours,
   },
@@ -123,6 +132,7 @@ export function localizeZones(zones: Zone[], localTz: string) {
 
     return {
       id: z.id,
+      e: z.e,
       c: z.c,
       tz,
       days,
@@ -153,7 +163,7 @@ export function getTzDay(time: Date, timeZone: string) {
 
 function getTzOffset(timeZone: string) {
   const formatter = new Intl.DateTimeFormat([], {
-    timeZoneName: "shortOffset",
+    timeZoneName: "short",
     timeZone,
   });
   return Number(formatter.format(new Date()).split("GMT")[1]);
