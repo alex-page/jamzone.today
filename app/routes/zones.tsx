@@ -37,7 +37,7 @@ export default function Zones() {
       <div className="fixed z-20 bottom-0 left-0 right-0 bg-slate-900">
         <div className="px-8">
           <nav className="w-full text-xs py-5 text-slate-400 flex justify-between items-center border-t border-gray-700">
-            <p className="flex gap-3">
+            <p className="flex flex-col gap-1 sm:flex-row sm:gap-3">
               <Link href={`/editor?${paramString}`}>
                 <span className="flex gap-1 items-center">
                   <svg
@@ -86,7 +86,7 @@ export default function Zones() {
                 </span>
               </button>
             </p>
-            <p className="flex gap-3">
+            <p className="flex flex-col gap-1 sm:flex-row sm:gap-3 text-right">
               <span>
                 Made by{" "}
                 <Link href="https://twitter.com/alexpage_" external>
