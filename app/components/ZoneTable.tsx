@@ -91,7 +91,7 @@ export default function ZoneTable({ zones }: Props) {
               }`}
               key={zid}
             >
-              <div className="w-40 py-2 sticky z-10 left-0 bg-gray-900 flex gap-2">
+              <div className="w-40 py-2 sticky z-10 left-0 bg-slate-900 flex gap-2">
                 <div className="w-6 h-6 rounded overflow-hidden bg-white/20">
                   <img
                     alt=""
@@ -102,7 +102,7 @@ export default function ZoneTable({ zones }: Props) {
                   <p>
                     {getTzDay(time, zone.tz)} {getTzHour(time, zone.tz)}
                   </p>
-                  <p className="text-gray-500 truncate">{zone.c}</p>
+                  <p className="text-slate-500 truncate">{zone.c}</p>
                 </div>
               </div>
               {timeChunks.map((tChunk, i) => (

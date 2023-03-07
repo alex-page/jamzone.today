@@ -36,7 +36,7 @@ export default function DayBoxes({ label, name, values }: Props) {
               name={`${name}-${i}`}
             />
 
-            <div className="select-none w-6 h-9 grid place-items-center text-xs font-medium rounded peer-checked:bg-blue-500 peer-focus-visible:border-blue-500 peer-checked:peer-focus-visible:border-white peer-checked:text-gray-100 text-gray-300 border border-gray-400/20 hover:border-gray-400/40 transition-colors bg-gray-800">
+            <div className="select-none w-6 h-9 grid place-items-center text-xs font-medium rounded peer-checked:bg-blue-500 peer-focus-visible:border-blue-500 peer-checked:peer-focus-visible:border-white peer-checked:text-slate-100 text-slate-300 border border-gray-400/20 hover:border-gray-400/40 transition-colors bg-slate-800">
               <span aria-hidden="true">{day.charAt(0)}</span>
               <span className="sr-only">{day}</span>
             </div>

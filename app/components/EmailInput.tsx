@@ -24,12 +24,12 @@ const Icon = () => (
 export default function EmailInput({ label, name, value }: Props) {
   return (
     <div className="flex flex-col flex-1">
-      <p className="flex gap-1 text-gray-400" title="Used for gravatar image">
+      <p className="flex gap-1 text-slate-400" title="Used for gravatar image">
         <Label htmlFor={name}>{label}</Label>
         <Icon />
       </p>
       <input
-        className="w-full leading-none px-4 py-2 text-sm bg-gray-400/10 text-gray-300 border border-gray-400/20 hover:border-gray-400/40 transition-colors rounded outline-none focus:border-blue-500 placeholder:text-gray-700"
+        className="leading-none px-4 py-2 text-sm bg-slate-400/10 text-slate-300 border border-gray-400/20 hover:border-gray-400/40 transition-colors rounded outline-none focus:border-blue-500 placeholder:text-slate-700"
         type="email"
         id={name}
         name={name}

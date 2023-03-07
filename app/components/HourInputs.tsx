@@ -21,7 +21,7 @@ export default function HourInputs({ name, label, values }: Props) {
             min="00:00"
             max="23:45"
             required
-            className="[&:nth-child(even)]:mr-1 py-2 px-1 font-mono rounded text-xs h-9 bg-gray-400/10 text-gray-300 border border-gray-400/20 hover:border-gray-400/40 transition-colors outline-none focus:border-blue-500"
+            className="[&:nth-child(even)]:mr-1 py-2 px-1 font-mono rounded text-xs h-9 bg-slate-400/10 text-slate-300 border border-gray-400/20 hover:border-gray-400/40 transition-colors outline-none focus:border-blue-500"
           />
         ))}
       </div>

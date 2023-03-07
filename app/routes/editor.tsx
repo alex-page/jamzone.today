@@ -68,12 +68,12 @@ export default function Editor() {
       <Header />
       <Form method="post" preventScrollReset className="grid gap-6">
         <div className="flex flex-row items-center justify-between">
-          <h1 className="text-3xl font-semibold text-gray-300">New jamzone</h1>
+          <h1 className="text-3xl font-semibold text-slate-300">New jamzone</h1>
         </div>
-        <div className="grid gap-6">
+        <div className="grid gap-12 sm:gap-6">
           {zones.map((zone: Zone, rowId: number) => (
             <div key={zone.id} className="group flex justify-between gap-4">
-              <div className="flex flex-1 flex-wrap gap-4">
+              <div className="flex flex-1 flex-wrap gap-2 sm:gap-4">
                 <input type="hidden" name={`${rowId}-id`} value={zone.id} />
                 <EmailInput label="Email" name={`${rowId}-e`} value={zone.e} />
                 <CityPicker label="City" name={`${rowId}-c`} value={zone.c} />
@@ -100,7 +100,7 @@ export default function Editor() {
                 name="_action"
                 value={`delete-${rowId}`}
                 aria-label="Remove item"
-                className="select-none mt-5 outline-none px-2 transition-colors bg-gray-200/10 text-gray-300 border border-gray-400/20 hover:border-gray-400/40 rounded focus-visible:border-blue-500"
+                className="select-none mt-5 outline-none px-2 transition-colors bg-slate-200/10 text-slate-300 border border-gray-400/20 hover:border-gray-400/40 rounded focus-visible:border-blue-500"
                 disabled={zones.length === 1}
                 title="Remove item"
                 formNoValidate
@@ -127,14 +127,14 @@ export default function Editor() {
           <button
             name="_action"
             value="create"
-            className="text-sm select-none outline-none py-1 px-4 transition-colors bg-gray-200/10 text-gray-300 border border-gray-400/20 hover:border-gray-400/40 rounded-full focus-visible:border-blue-500"
+            className="text-sm select-none outline-none py-1 px-4 transition-colors bg-slate-200/10 text-slate-300 border border-gray-400/20 hover:border-gray-400/40 rounded-full focus-visible:border-blue-500"
             formNoValidate
           >
             + Add person
           </button>
         </div>
 
-        <div className="flex justify-end">
+        <div className="flex justify-end pb-10">
           <button
             name="_action"
             value="redirect"

@@ -28,19 +28,14 @@ export default function Index() {
       <PageLayout>
         <Header />
         <div className="text-center pt-32">
-          {/* <h1 className="inline-grid relative">
-            <div className="absolute -top-2 -right-2 text-rose-500 flex">
-              <span className="text-xs font-semibold py-1 px-2">🍓 Alpha</span>
-            </div>
-            <span className="text-6xl font-bold">jamzone.today</span>
-          </h1> */}
-          {/* <p className="mt-4 text-xl text-gray-400">
-            Worldwide collaboration made easy.
-          </p> */}
-
-          <h1 className="text-6xl font-bold max-w-2xl m-auto relative">
-            Jam with your homies across timezones.
+          <h1 className="text-3xl sm:text-6xl font-bold max-w-2xl m-auto relative">
+            Jam with your homies
+            <br />
+            across timezones.
           </h1>
+          <p className="mt-4 text-xl text-slate-400">
+            Test drive the alpha today!
+          </p>
           <div className="mt-8">
             <RLink
               to="/editor"
@@ -52,8 +47,8 @@ export default function Index() {
         </div>
       </PageLayout>
 
-      <div className="mt-12 max-w-7xl pb-24 mx-auto perspective-lg">
-        <div className="rotate-x-25 mx-12 pl-4 overflow-hidden">
+      <div className=" mt-12 max-w-7xl pb-24 mx-auto overflow-hidden [perspective:800px] sm:[perspective:1024px]">
+        <div className="[transform:rotateX(25deg)_scale(0.9)]">
           <ZoneTable zones={zones} />
         </div>
       </div>

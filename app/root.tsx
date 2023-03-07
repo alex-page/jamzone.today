@@ -29,7 +29,7 @@ export const meta: MetaFunction = () => ({
 
 export default function Root() {
   return (
-    <html lang="en" className="dark bg-gray-900 text-zinc-100">
+    <html lang="en" className="dark bg-slate-900 text-zinc-100">
       <head>
         <Meta />
         <Links />

@@ -8,7 +8,7 @@ interface Props {
 
 export default function Link({ href, external = false, children }: Props) {
   const linkClass =
-    "font-medium rounded text-gray-100 focus:outline-offset-2 focus:outline-2 focus:outline-blue-500";
+    "font-medium rounded text-blue-100 focus:outline-offset-2 focus:outline-2 focus:outline-blue-500";
 
   if (external) {
     return (
