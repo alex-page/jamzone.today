@@ -42,13 +42,11 @@ export default function ZoneTable({ zones }: Props) {
   const time = useTime();
   if (!time) return <></>;
 
-  const currentTime = `${time.getHours()}:${
-    (time.getMinutes() < 10 ? "0" : "") + time.getMinutes().toString()
-  }:${(time.getSeconds() < 10 ? "0" : "") + time.getSeconds()}`;
-
-  const currentTimeInMinutes = time.getHours() * 60 + time.getMinutes();
+  const currentTime = time.toTimeString().split(" ")[0];
   const timePercentage =
-    ((currentTimeInMinutes / (24 * 60)) * 100).toFixed(2) + "%";
+    (((time.getHours() * 60 + time.getMinutes()) / (24 * 60)) * 100).toFixed(
+      2
+    ) + "%";
 
   return (
     <div className="font-mono font-light text-xs">
