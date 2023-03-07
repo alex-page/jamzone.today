@@ -47,7 +47,10 @@ export default function Index() {
         </div>
       </PageLayout>
 
-      <div className=" mt-12 max-w-7xl pb-24 mx-auto overflow-hidden [perspective:800px] sm:[perspective:1024px]">
+      <div
+        aria-hidden="true"
+        className=" mt-12 max-w-7xl pb-24 mx-auto overflow-hidden [perspective:800px] sm:[perspective:1024px]"
+      >
         <div className="[transform:rotateX(25deg)_scale(0.9)]">
           <ZoneTable zones={zones} />
         </div>

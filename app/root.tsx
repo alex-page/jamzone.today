@@ -24,7 +24,9 @@ export function links() {
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
   title: "jamzone.today",
-  viewport: "width=device-width,initial-scale=1,maximum-scale=1",
+  viewport: "width=device-width,initial-scale=1",
+  description:
+    "Break the barrier of timezones today. Easily add multiple people across the world and find when they are available.",
 });
 
 export default function Root() {

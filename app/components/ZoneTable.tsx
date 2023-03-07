@@ -94,6 +94,8 @@ export default function ZoneTable({ zones }: Props) {
               <div className="w-40 py-2 sticky z-10 left-0 backdrop-blur-md flex gap-2">
                 <div className="w-6 h-6 rounded overflow-hidden bg-white/20">
                   <img
+                    width="24px"
+                    height="24px"
                     alt=""
                     src={`https://gravatar.com/avatar/${md5(zone.e)}`}
                   />
