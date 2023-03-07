@@ -5,7 +5,8 @@ import Link from "~/components/Link";
 import PageLayout from "~/components/PageLayout";
 import ZoneTable from "~/components/ZoneTable";
 import type { Zone, ZoneRow } from "~/types";
-import { localizeZones, mockParams, paramsToZoneArray } from "~/utils";
+import { localizeZones } from "~/utils";
+import { mockParams, paramsToZoneArray } from "~/utils/index.server";
 
 export const loader: LoaderFunction = async () => {
   const zones = paramsToZoneArray(mockParams);

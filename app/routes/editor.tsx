@@ -3,7 +3,6 @@ import type { ActionArgs, LoaderFunction } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { nanoid } from "nanoid";
-import { Link as RLink } from "@remix-run/react";
 
 import Link from "~/components/Link";
 import EmailInput from "~/components/EmailInput";
@@ -11,7 +10,7 @@ import DayBoxes from "~/components/DayBoxes";
 import HourInputs from "~/components/HourInputs";
 import PageLayout from "~/components/PageLayout";
 import CityPicker from "~/components/CityPicker";
-import { paramsToZoneArray, zoneArrayToParams } from "~/utils";
+import { paramsToZoneArray } from "~/utils/index.server";
 import type { Zone } from "~/types";
 
 function defaultZone(): Zone {
