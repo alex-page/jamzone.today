@@ -44,7 +44,7 @@ export default function ZoneTable({ zones }: Props) {
 
   const currentTime = `${time.getHours()}:${
     (time.getMinutes() < 10 ? "0" : "") + time.getMinutes().toString()
-  }:${time.getSeconds()}`;
+  }:${(time.getSeconds() < 10 ? "0" : "") + time.getSeconds()}`;
 
   const currentTimeInMinutes = time.getHours() * 60 + time.getMinutes();
   const timePercentage =
