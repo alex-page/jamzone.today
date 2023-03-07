@@ -28,13 +28,13 @@ export default function Index() {
       <PageLayout>
         <Header />
         <div className="text-center pt-32">
-          <h1 className="text-3xl sm:text-6xl font-bold max-w-2xl m-auto relative">
-            Jam with your homies
+          <h1 className="text-4xl sm:text-6xl font-bold max-w-lg m-auto relative">
+            Break the barrier
             <br />
-            across timezones.
+            of timezones
           </h1>
           <p className="mt-4 text-xl text-slate-400">
-            Test drive the alpha today!
+            Jam with your homies today!
           </p>
           <div className="mt-8">
             <RLink
