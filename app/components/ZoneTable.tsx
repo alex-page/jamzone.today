@@ -3,7 +3,23 @@ import { useEffect, useState } from "react";
 import type { ZoneRow } from "~/types";
 import { getTzDay, getTzHour, hours, timeChunks } from "~/utils";
 
-const colors = [
+const smallPallette = [
+  "bg-blue-500",
+  "bg-purple-500",
+  "bg-pink-500",
+  "bg-red-500",
+  "bg-orange-500",
+  "bg-yellow-500",
+  "bg-green-500",
+];
+
+const bigPallette = [
+  "bg-blue-500",
+  "bg-indigo-500",
+  "bg-violet-500",
+  "bg-purple-500",
+  "bg-fuchsia-500",
+  "bg-pink-500",
   "bg-rose-500",
   "bg-red-500",
   "bg-orange-500",
@@ -15,12 +31,6 @@ const colors = [
   "bg-teal-500",
   "bg-cyan-500",
   "bg-sky-500",
-  "bg-blue-500",
-  "bg-indigo-500",
-  "bg-violet-500",
-  "bg-purple-500",
-  "bg-fuchsia-500",
-  "bg-pink-500",
 ];
 
 function useTime(): Date | null {
@@ -48,6 +58,8 @@ export default function ZoneTable({ zones }: Props) {
       2
     ) + "%";
 
+  const colors = zones.length <= 7 ? smallPallette : bigPallette;
+
   return (
     <div className="font-mono font-light text-xs">
       <div className="grid gap-1">
@@ -66,7 +78,7 @@ export default function ZoneTable({ zones }: Props) {
               style={{ left: timePercentage }}
             ></div>
             <div
-              className="absolute bottom-full -translate-y-1 -translate-x-2/4 text-[10px] px-1 text-white bg-rose-500  z-20 outline outline-2 outline-gray-900"
+              className="absolute bottom-full rounded -translate-y-1 -translate-x-2/4 text-[10px] px-1 text-white bg-rose-500  z-20 outline outline-2 outline-gray-900"
               style={{ left: timePercentage }}
             >
               {currentTime}

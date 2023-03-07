@@ -1,10 +1,9 @@
-import { useFetcher, useLoaderData } from "@remix-run/react";
+import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import type { ActionArgs, LoaderFunction } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { nanoid } from "nanoid";
 
-import Link from "~/components/Link";
 import EmailInput from "~/components/EmailInput";
 import DayBoxes from "~/components/DayBoxes";
 import HourInputs from "~/components/HourInputs";
@@ -12,6 +11,7 @@ import PageLayout from "~/components/PageLayout";
 import CityPicker from "~/components/CityPicker";
 import { paramsToZoneArray } from "~/utils/index.server";
 import type { Zone } from "~/types";
+import Header from "~/components/Header";
 
 function defaultZone(): Zone {
   return {
@@ -59,34 +59,19 @@ export async function action({ request }: ActionArgs) {
 }
 
 export default function Editor() {
-  const editor = useFetcher();
   const loaderData = useLoaderData() as { zones: Zone[] };
-
-  if (!editor.data) {
-    editor.data = { zones: loaderData.zones };
-  }
+  const actionData = useActionData() as { zones: Zone[] };
+  const { zones } = actionData && actionData.zones ? actionData : loaderData;
 
   return (
     <PageLayout>
-      <editor.Form method="post" preventScrollReset>
-        <nav className="text-xs py-3 text-gray-400 flex justify-between items-center border-b border-gray-700">
-          <p>
-            <Link href="/">← Home</Link>
-          </p>
-          <button
-            name="_action"
-            value="redirect"
-            className="select-none shadow-lg shadow-rose-500/10 hover:shadow-rose-500/20 transition-shadow text-white inline-flex font-semibold rounded-full bg-gradient-to-r from-rose-500 to-red-500 focus:outline-2 focus:outline-blue-500 focus:outline-offset-4 py-1 -my-1 px-3"
-          >
-            View jamzone →
-          </button>
-        </nav>
-        <div className="flex flex-row mt-8 items-center justify-between">
+      <Header />
+      <Form method="post" preventScrollReset className="grid gap-6">
+        <div className="flex flex-row items-center justify-between">
           <h1 className="text-3xl font-semibold text-gray-300">New jamzone</h1>
         </div>
-
-        <div className="grid gap-6 mt-8 mb-56">
-          {editor.data.zones.map((zone: Zone, rowId: number) => (
+        <div className="grid gap-6">
+          {zones.map((zone: Zone, rowId: number) => (
             <div key={zone.id} className="group flex justify-between gap-4">
               <div className="flex flex-1 flex-wrap gap-4">
                 <input type="hidden" name={`${rowId}-id`} value={zone.id} />
@@ -115,9 +100,8 @@ export default function Editor() {
                 name="_action"
                 value={`delete-${rowId}`}
                 aria-label="Remove item"
-                className={`flex items-center mt-4 px-4 text-gray-600 hover:text-gray-400 transition-colors ${
-                  editor.data.zones.length === 1 && "pointer-events-none"
-                }`}
+                className="select-none mt-5 outline-none px-2 transition-colors bg-gray-200/10 text-gray-300 border border-gray-400/20 hover:border-gray-400/40 rounded focus-visible:border-blue-500"
+                disabled={zones.length === 1}
                 title="Remove item"
                 formNoValidate
               >
@@ -139,22 +123,27 @@ export default function Editor() {
             </div>
           ))}
         </div>
-        <div className="fixed bottom-0 right-0 left-0 shadow-[0_0_20px_20px_#111827e6]">
-          <div className="backdrop-blur-sm bg-gray-900/90 absolute inset-0 -z-10"></div>
-          <div className="max-w-4xl mx-auto flex gap-4 place-items-center pt-8 pb-16">
-            <div className="border-t border-gray-700 flex-1" />
-            <button
-              name="_action"
-              value="create"
-              className="text-sm select-none outline-none py-1 px-6 transition-colors bg-gray-200/10 text-gray-300 border border-gray-400/20 hover:border-gray-400/40 rounded-full focus-visible:border-blue-500"
-              formNoValidate
-            >
-              + Add person
-            </button>
-            <div className="border-t border-gray-700 flex-1" />
-          </div>
+        <div>
+          <button
+            name="_action"
+            value="create"
+            className="text-sm select-none outline-none py-1 px-4 transition-colors bg-gray-200/10 text-gray-300 border border-gray-400/20 hover:border-gray-400/40 rounded-full focus-visible:border-blue-500"
+            formNoValidate
+          >
+            + Add person
+          </button>
         </div>
-      </editor.Form>
+
+        <div className="flex justify-end">
+          <button
+            name="_action"
+            value="redirect"
+            className="select-none shadow-lg shadow-rose-500/10 hover:shadow-rose-500/20 transition-shadow text-white inline-flex font-semibold rounded-full bg-gradient-to-r from-rose-500 to-red-500 focus:outline-2 focus:outline-blue-500 focus:outline-offset-4 py-3 px-6"
+          >
+            View jamzone →
+          </button>
+        </div>
+      </Form>
     </PageLayout>
   );
 }
