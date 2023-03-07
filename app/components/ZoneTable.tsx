@@ -91,7 +91,7 @@ export default function ZoneTable({ zones }: Props) {
               }`}
               key={zid}
             >
-              <div className="w-40 py-2 sticky z-10 left-0 bg-slate-900 flex gap-2">
+              <div className="w-40 py-2 sticky z-10 left-0 backdrop-blur-md flex gap-2">
                 <div className="w-6 h-6 rounded overflow-hidden bg-white/20">
                   <img
                     alt=""
