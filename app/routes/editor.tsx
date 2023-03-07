@@ -1,4 +1,4 @@
-import { Form, useActionData, useLoaderData } from "@remix-run/react";
+import { useFetcher, useLoaderData } from "@remix-run/react";
 import type { ActionArgs, LoaderFunction } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 import { json } from "@remix-run/node";
@@ -59,13 +59,16 @@ export async function action({ request }: ActionArgs) {
 }
 
 export default function Editor() {
+  const editor = useFetcher();
   const loaderData = useLoaderData() as { zones: Zone[] };
-  const actionData = useActionData() as { zones: Zone[] };
-  const { zones } = actionData && actionData.zones ? actionData : loaderData;
+
+  if (!editor.data) {
+    editor.data = { zones: loaderData.zones };
+  }
 
   return (
     <PageLayout>
-      <Form method="post" preventScrollReset>
+      <editor.Form method="post" preventScrollReset>
         <nav className="text-xs py-3 text-gray-400 flex justify-between items-center border-b border-gray-700">
           <p>
             <Link href="/">← Home</Link>
@@ -83,7 +86,7 @@ export default function Editor() {
         </div>
 
         <div className="grid gap-6 mt-8 mb-56">
-          {zones.map((zone: Zone, rowId: number) => (
+          {editor.data.zones.map((zone: Zone, rowId: number) => (
             <div key={zone.id} className="group flex justify-between gap-4">
               <div className="flex flex-1 flex-wrap gap-4">
                 <input type="hidden" name={`${rowId}-id`} value={zone.id} />
@@ -113,7 +116,7 @@ export default function Editor() {
                 value={`delete-${rowId}`}
                 aria-label="Remove item"
                 className={`flex items-center mt-4 px-4 text-gray-600 hover:text-gray-400 transition-colors ${
-                  zones.length === 1 && "pointer-events-none"
+                  editor.data.zones.length === 1 && "pointer-events-none"
                 }`}
                 title="Remove item"
                 formNoValidate
@@ -151,7 +154,7 @@ export default function Editor() {
             <div className="border-t border-gray-700 flex-1" />
           </div>
         </div>
-      </Form>
+      </editor.Form>
     </PageLayout>
   );
 }
