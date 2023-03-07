@@ -36,9 +36,10 @@ export function getTzDay(time: Date, timeZone: string) {
 
 function getTzOffset(timeZone: string) {
   const formatter = new Intl.DateTimeFormat([], {
-    timeZoneName: "short",
+    timeZoneName: "shortOffset",
     timeZone,
   });
+
   return Number(formatter.format(new Date()).split("GMT")[1]);
 }
 

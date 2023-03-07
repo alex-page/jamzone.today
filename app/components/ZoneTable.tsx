@@ -42,6 +42,10 @@ export default function ZoneTable({ zones }: Props) {
   const time = useTime();
   if (!time) return <></>;
 
+  const currentTime = `${time.getHours()}:${
+    (time.getMinutes() < 10 ? "0" : "") + time.getMinutes().toString()
+  }:${time.getSeconds()}`;
+
   const currentTimeInMinutes = time.getHours() * 60 + time.getMinutes();
   const timePercentage =
     ((currentTimeInMinutes / (24 * 60)) * 100).toFixed(2) + "%";
@@ -67,7 +71,7 @@ export default function ZoneTable({ zones }: Props) {
               className="absolute bottom-full -translate-y-1 -translate-x-2/4 text-[10px] px-1 text-white bg-rose-500  z-20 outline outline-2 outline-gray-900"
               style={{ left: timePercentage }}
             >
-              {`${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`}
+              {currentTime}
             </div>
           </div>
           {zones.map((zone, zid) => (
