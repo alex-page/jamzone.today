@@ -40,7 +40,11 @@ function getTzOffset(timeZone: string) {
     timeZone,
   });
 
-  return Number(formatter.format(new Date()).split("GMT")[1]);
+  const offset = formatter.format(new Date()).split("GMT")[1];
+  const [hour = 0, minute = 0, second = 0] = offset.split(":").map(x => Number(x));
+
+  const offsetHour = Math.abs(hour) + minute/60 + second/3600;
+  return hour < 0 ? offsetHour : -offsetHour;
 }
 
 function getLocalTime(time: string, tz: string, localTz: string) {
